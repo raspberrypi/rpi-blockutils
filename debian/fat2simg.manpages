@@ -1,0 +1,4 @@
+debian/fat2simg.1
+debian/ascii_fat_to_blockmap.1
+debian/extract_fat_as_hex.1
+debian/fat_generate_blockmap.1

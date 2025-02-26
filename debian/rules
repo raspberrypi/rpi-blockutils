@@ -1,0 +1,22 @@
+#!/usr/bin/make -f
+
+include /usr/share/dpkg/architecture.mk
+
+export DEB_HOST_MULTIARCH
+
+%:
+	dh $@
+
+execute_before_dh_install:
+	pandoc fat2simg.md --standalone --to=man --shift-heading-level-by=-1 \
+		--output=debian/fat2simg.1
+	pandoc ascii_fat_to_blockmap.md --standalone --to=man --shift-heading-level-by=-1 \
+		--output=debian/ascii_fat_to_blockmap.1
+	pandoc extract_fat_as_hex.md --standalone --to=man --shift-heading-level-by=-1 \
+		--output=debian/extract_fat_as_hex.1
+	pandoc fat_generate_blockmap.md --standalone --to=man --shift-heading-level-by=-1 \
+		--output=debian/fat_generate_blockmap.1
+	pandoc blockmap_img2simg.md --standalone --to=man --shift-heading-level-by=-1 \
+		--output=debian/blockmap_img2simg.1
+	pandoc validate_blockmap.md --standalone --to=man --shift-heading-level-by=-1 \
+		--output=debian/validate_blockmap.1

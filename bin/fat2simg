@@ -1,0 +1,27 @@
+#!/bin/sh
+
+set -e
+
+# Usage:
+#   fat2simg <fat img> <sparse img>
+
+ORIG_FAT_IMAGE="$1"
+SPARSE_OUTPUT="$2"
+
+# Zero unused sectors
+FAT_IMAGE="$(mktemp)"
+cp "$ORIG_FAT_IMAGE" "$FAT_IMAGE"
+>/dev/null fatcat "$FAT_IMAGE" -z
+
+# Generate a blockmap
+BLOCK_MAP="$(mktemp)"
+fat_generate_blockmap "$FAT_IMAGE" > "$BLOCK_MAP"
+
+# Calculate block size
+BLOCK_SIZE="$(($(stat -c'%s' "$FAT_IMAGE") / $(stat -c'%s' "$BLOCK_MAP")))"
+
+blockmap_img2simg \
+  "$BLOCK_SIZE" \
+  "$BLOCK_MAP" \
+  "$FAT_IMAGE" \
+  "$SPARSE_OUTPUT"

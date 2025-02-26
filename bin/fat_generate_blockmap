@@ -1,0 +1,33 @@
+#!/bin/sh
+
+set -e
+
+FAT_IMG=$1
+FAT_IMG_SIZE="$(stat '-c%s' "${FAT_IMG}")"
+
+FAT_INFO="$(mktemp)"
+fatcat "${FAT_IMG}" -i > "${FAT_INFO}"
+
+get_param() {
+  grep -oP '^'"${1}"': \K.*?(?=\s*$)' "${FAT_INFO}"
+}
+
+BLOCK_SIZE="$(get_param "Bytes per cluster")"
+if [ $((FAT_IMG_SIZE % BLOCK_SIZE)) != "0" ]; then
+  2>&1 echo "Image is not a multiple of block size"
+  exit 1
+fi
+
+DATA_OFFSET="$((0x$(get_param "Data start address")))"
+if [ $((DATA_OFFSET % BLOCK_SIZE)) != "0" ]; then
+  2>&1 echo "Data offset not a multiple of block size"
+  exit 1
+fi
+NUM_HEADER_BLOCKS=$((DATA_OFFSET / BLOCK_SIZE))
+
+# Start constructing blockmap, we write 1s for the header
+2>/dev/null dd if=/dev/zero bs=1 count="${NUM_HEADER_BLOCKS}" | LC_ALL=C tr "\000" "\061"
+
+# Generate / append a blockmap for the data using the FAT
+extract_fat_as_hex "${FAT_IMG}" | ascii_fat_to_blockmap
+

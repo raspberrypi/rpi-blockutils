@@ -1,0 +1,10 @@
+blockmap_img2simg
+validate_blockmap
+*.o
+.debhelper/
+*.substvars
+debian/rpi-blockutils
+debian/fat2simg
+debian/debhelper-build-stamp
+debian/files
+debian/*.1

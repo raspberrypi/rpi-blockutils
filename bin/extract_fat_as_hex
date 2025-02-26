@@ -1,0 +1,40 @@
+#!/bin/sh
+
+set -e
+
+FAT_IMG="$1"
+
+if [ ! -f "${FAT_IMG}" ]; then
+  2>&1 echo "Usage: extract_fat_as_hex <FAT Paritition Image>"
+  exit 1
+fi
+
+FAT_INFO="$(mktemp)"
+fatcat "${FAT_IMG}" -i > "${FAT_INFO}"
+
+get_param() {
+  grep -oP '^'"${1}"': \K.*?(?=\s*$)' "${FAT_INFO}"
+}
+
+FAT_TYPE="$(get_param "Filesystem type")"
+
+NIBBLES_PER_FAT_ENTRY=
+case "$FAT_TYPE" in
+  "FAT32")
+    NIBBLES_PER_FAT_ENTRY=8
+    ;;
+  *)
+    # TODO Complicated byte ordering (especially for FAT12), xxd invocation
+    # below is insufficient.
+    2>&1 "$FAT_TYPE is not a supported FAT type"
+    exit 1
+    ;;
+esac
+
+FAT_TABLE="$(mktemp)"
+fatcat "${FAT_IMG}" -b "${FAT_TABLE}" -t 1 > /dev/null
+
+xxd -e "$FAT_TABLE" | \
+  grep -oP '^[[:xdigit:]]{8}: \K([[:xdigit:]]+ )+' | \
+  tr -d ' \n' | \
+  fold -w "$NIBBLES_PER_FAT_ENTRY"

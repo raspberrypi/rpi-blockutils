@@ -1,0 +1,25 @@
+#!/usr/bin/env -S sed -nEf
+
+# Delete first two entries as they're reserved and don't refer to clusters in
+# the data section.
+n; z;
+
+# Read all lines into the pattern space
+:a
+N
+$!ba
+
+# Detect entries that demarcate free clusters and replace with '0'
+# FAT32: ?0000000
+# FAT16: 0000
+# FAT12: 000
+s/\b([[:xdigit:]]0{7}|0{3,4})\b/0/g
+
+# Otherwise replace with '1'
+s/\b[[:xdigit:]]{2,}\b/1/g
+
+# Remove newlines
+s/\n//g
+
+# Print pattern space
+p

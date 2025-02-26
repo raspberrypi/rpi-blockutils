@@ -1,0 +1,24 @@
+Source: rpi-blockutils
+Section: embedded
+Priority: optional
+Maintainer: Richard Oliver <richard.oliver@raspberrypi.com>
+Build-Depends: debhelper (>= 13), debhelper-compat (= 13), android-libsparse-dev, pandoc
+Standards-Version: 3.9.5
+Homepage: https://www.raspberrypi.com/software
+
+Package: rpi-blockutils
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: tools to manipulate sparse images using blockmaps
+ Command line tools to create and validate sparse images with the use of
+ blockmaps.
+ Includes the blockmap_img2simg and validate_blockmap tools.
+
+Package: fat2simg
+Architecture: all
+Depends: rpi-blockutils, fatcat, xxd
+Description: tool to create sparse FAT32 disk images
+ Command line tools to create sparse images from FAT32 disk images by
+ discarding unused clusters.
+ Includes the fat2simg, extract_fat_as_hex, ascii_fat_to_blockmap, and
+ fat_generate_blockmap tools.
