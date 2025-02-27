@@ -20,3 +20,5 @@ execute_before_dh_install:
 		--output=debian/blockmap_img2simg.1
 	pandoc validate_blockmap.md --standalone --to=man --shift-heading-level-by=-1 \
 		--output=debian/validate_blockmap.1
+	pandoc apply_simg.md --standalone --to=man --shift-heading-level-by=-1 \
+		--output=debian/apply_simg.1

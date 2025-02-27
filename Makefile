@@ -18,7 +18,7 @@ SPARSE_LDFLAGS += \
   -lsparse \
 
 .PHONY: all
-all: $(NAME) validate_blockmap
+all: $(NAME) validate_blockmap apply_simg
 
 $(NAME): $(OBJECTS)
 	$(CC) -o $@ $^ $(LDFLAGS) $(SPARSE_LDFLAGS)
@@ -29,6 +29,9 @@ $(OBJECTS): %.o: %.c
 validate_blockmap: validate_blockmap.c
 	$(CC) -o $@ $^ $(CPPFLAGS) $(CFLAGS) $(LDFLAGS)
 
+apply_simg: apply_simg.c
+	$(CC) -o $@ $^ $(CPPFLAGS) $(SPARSE_CPPFLAGS) $(CFLAGS) $(LDFLAGS) $(SPARSE_LDFLAGS)
+
 .PHONY: clean
 clean:
-	rm -f *.o blockmap_img2simg validate_blockmap
+	rm -f *.o blockmap_img2simg validate_blockmap apply_simg

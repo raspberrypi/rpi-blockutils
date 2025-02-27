@@ -12,7 +12,7 @@ Depends: ${shlibs:Depends}
 Description: tools to manipulate sparse images using blockmaps
  Command line tools to create and validate sparse images with the use of
  blockmaps.
- Includes the blockmap_img2simg and validate_blockmap tools.
+ Includes the blockmap_img2simg, validate_blockmap, and apply_simg tools.
 
 Package: fat2simg
 Architecture: all
