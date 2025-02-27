@@ -1,5 +1,9 @@
-rpi-blockutils (0.0.1) UNRELEASED; urgency=medium
+rpi-blockutils (0.1.0) bookworm; urgency=medium
 
+  [ Richard Oliver ]
   * Initial changelog
 
- -- Richard Oliver <richard.oliver@raspberrypi.com>  Wed, 26 Feb 2025 16:29:44 +0000
+  [ Serge Schneider ]
+  * Add salsa-ci.yml
+
+ -- Richard Oliver <richard.oliver@raspberrypi.com>  Thu, 27 Feb 2025 14:21:52 +0000
