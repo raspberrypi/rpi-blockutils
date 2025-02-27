@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
 
 		int amount_data = s.st_size < bs ? s.st_size : bs;
 
-		if (valid_block) {
+		if (valid_block == '1') {
 			if (is_zeroes(data + block * bs, bs)) {
 				sparse_file_add_fill(sparse, 0, bs, block);
 			} else {
