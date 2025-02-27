@@ -1,3 +1,10 @@
+rpi-blockutils (0.2.0) bookworm; urgency=medium
+
+  * blockmap_img2simg: Fix valid_block check
+  * Add apply_simg tool
+
+ -- Richard Oliver <richard.oliver@raspberrypi.com>  Thu, 27 Feb 2025 17:15:58 +0000
+
 rpi-blockutils (0.1.0) bookworm; urgency=medium
 
   [ Richard Oliver ]
